@@ -1,0 +1,6 @@
+[package]
+name = "serious_synth_thing"
+version = "0.1.0"
+authors = ["Jonathan Nilsson <jonathan@voysys.se>", "Mikael Petterson"]
+
+[dependencies]
