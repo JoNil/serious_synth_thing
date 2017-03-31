@@ -18,6 +18,30 @@ impl Executor for MyExecutor {
     }
 }
 
+fn output_sound_thingy(buffer: cpal::UnknownTypeBuffer, format: &cpal::Format, output_buffer: &[f32]) {
+    match buffer {
+        cpal::UnknownTypeBuffer::U16(mut buffer) => {
+            for (sample, value) in buffer.chunks_mut(format.channels.len()).zip(output_buffer.iter()) {
+                let value = ((value * 0.5 + 0.5) * std::u16::MAX as f32) as u16;
+                for out in sample.iter_mut() { *out = value; }
+            }
+        },
+
+        cpal::UnknownTypeBuffer::I16(mut buffer) => {
+            for (sample, value) in buffer.chunks_mut(format.channels.len()).zip(output_buffer.iter()) {
+                let value = (value * std::i16::MAX as f32) as i16;
+                for out in sample.iter_mut() { *out = value; }
+            }
+        },
+
+        cpal::UnknownTypeBuffer::F32(mut buffer) => {
+            for (sample, value) in buffer.chunks_mut(format.channels.len()).zip(output_buffer.iter()) {
+                for out in sample.iter_mut() { *out = *value; }
+            }
+        },
+    };
+}
+
 fn main() {
     let endpoint = cpal::get_default_endpoint().expect("Failed to get default endpoint");
     let format = endpoint.get_supported_formats_list().unwrap().next().expect("Failed to get endpoint format");
@@ -36,27 +60,7 @@ fn main() {
 
         synth.generate(&mut output_buffer);
 
-        match buffer {
-            cpal::UnknownTypeBuffer::U16(mut buffer) => {
-                for (sample, value) in buffer.chunks_mut(format.channels.len()).zip(output_buffer.iter()) {
-                    let value = ((value * 0.5 + 0.5) * std::u16::MAX as f32) as u16;
-                    for out in sample.iter_mut() { *out = value; }
-                }
-            },
-
-            cpal::UnknownTypeBuffer::I16(mut buffer) => {
-                for (sample, value) in buffer.chunks_mut(format.channels.len()).zip(output_buffer.iter()) {
-                    let value = (value * std::i16::MAX as f32) as i16;
-                    for out in sample.iter_mut() { *out = value; }
-                }
-            },
-
-            cpal::UnknownTypeBuffer::F32(mut buffer) => {
-                for (sample, value) in buffer.chunks_mut(format.channels.len()).zip(output_buffer.iter()) {
-                    for out in sample.iter_mut() { *out = *value; }
-                }
-            },
-        };
+        output_sound_thingy(buffer, &format, output_buffer.as_slice());
 
         Ok(())
     })).execute(executor);
