@@ -19,7 +19,7 @@ impl Synth {
 
     pub fn generate(&mut self, buffer: &mut [f32]) {
         for sample in buffer.iter_mut() {
-            *sample = (self.phase as f32 * 440.0 * 2.0 * 3.141592 / self.sample_rate as f32).sin());
+            *sample = (self.phase as f32 * 440.0 * 2.0 * 3.141592 / self.sample_rate as f32).sin();
             self.phase += 1;
         }
     }
