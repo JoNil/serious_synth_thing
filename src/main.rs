@@ -27,7 +27,7 @@ fn main() {
 
     let (mut voice, stream) = cpal::Voice::new(&endpoint, &format, &event_loop).expect("Failed to create a voice");
 
-    let mut synth = synth_thingy::Synth::new(format.samples_rate.0);
+    let mut synth = synth_thingy::Synth::new(format.samples_rate.0 as i32);
 
     voice.play();
     task::spawn(stream.for_each(move |buffer| -> Result<_, ()> {

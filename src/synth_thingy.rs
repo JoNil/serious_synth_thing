@@ -5,21 +5,23 @@ fn Buffer() {
 
 pub struct Synth {
     phase: i32,
-    sample_rate: u32,
+    sample_rate: i32,
     tones: Vec<f32>,
     tone_index: i32,
     counter: i32,
+    bpm: i32,
 }
 
 impl Synth {
 
-    pub fn new(sample_rate: u32) -> Synth {
+    pub fn new(sample_rate: i32) -> Synth {
         Synth {
             phase: 0,
             sample_rate: sample_rate,
-            tones: vec![440.0, 880.0, 320.0],
+            tones: vec![440.0, 880.0, 880.0, 320.0, 320.0, 320.0, 440.0, 100.0, 60.0, 60.0, 60.0],
             tone_index: 0,
             counter: 0,
+            bpm: 120,
         }
     } 
 
@@ -28,7 +30,7 @@ impl Synth {
 
             self.counter += 1;
 
-            if self.counter > 4800 {
+            if self.counter > self.sample_rate / (self.bpm / 60 * 4) {
                 self.counter = 0;
                 self.tone_index += 1;
             }
