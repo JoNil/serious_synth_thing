@@ -32,7 +32,7 @@ fn main() {
     voice.play();
     task::spawn(stream.for_each(move |buffer| -> Result<_, ()> {
 
-        let mut output_buffer = vec![0.0; buffer.len()];
+        let mut output_buffer = vec![0.0; buffer.len() / format.channels.len()];
 
         synth.generate(&mut output_buffer);
 
