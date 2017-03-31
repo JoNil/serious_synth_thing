@@ -1,1 +1,4 @@
 //initial commit
+fn Buffer() {
+    
+}
