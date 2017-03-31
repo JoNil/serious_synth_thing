@@ -1,7 +1,4 @@
-//initial commit
-fn Buffer() {
-    
-}
+use tones::*;
 
 pub struct Synth {
     phase: i32,
@@ -18,12 +15,12 @@ impl Synth {
         Synth {
             phase: 0,
             sample_rate: sample_rate,
-            tones: vec![440.0, 880.0, 880.0, 320.0, 320.0, 320.0, 440.0, 100.0, 60.0, 60.0, 60.0],
+            tones: vec![C5, F5, G5, A5, D5, F5, G5, B5, C5, C5, F5, G5, A5],
             tone_index: 0,
             counter: 0,
             bpm: 120,
         }
-    } 
+    }
 
     pub fn generate(&mut self, buffer: &mut [f32]) {
         for sample in buffer.iter_mut() {

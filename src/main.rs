@@ -9,6 +9,7 @@ use futures::task::Run;
 use std::sync::Arc;
 
 mod synth_thingy;
+mod tones;
 
 struct MyExecutor;
 
