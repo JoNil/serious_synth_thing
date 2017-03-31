@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["Jonathan Nilsson <jonathan@voysys.se>", "Mikael Petterson"]
 
 [dependencies]
+cpal = "0.4.0"
+futures = "0.1.11"
