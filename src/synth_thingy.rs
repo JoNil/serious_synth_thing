@@ -25,23 +25,21 @@ impl Synth {
         }
     }
 
-    pub fn generate(&mut self, buffer: &mut [f32]) {
-        for sample in buffer.iter_mut() {
+    pub fn generate(&mut self, sample: &mut f32) -> f32 {
+        self.counter += 1;
 
-            self.counter += 1;
-
-            if self.counter > self.sample_rate / (self.bpm / 60 * 4) {
-                self.counter = 0;
-                self.tone_index += 1;
-            }
-
-            if self.tone_index >= self.tones.len() as i32 {
-                self.tone_index = 0;
-            }
-
-            *sample = (self.phase as f32 * self.tones[self.tone_index as usize] * 2.0 * 3.141592 / self.sample_rate as f32).sin();
-            self.phase += 1;
+        if self.counter > self.sample_rate / (self.bpm / 60 * 4) {
+            self.counter = 0;
+            self.tone_index += 1;
         }
+
+        if self.tone_index >= self.tones.len() as i32 {
+            self.tone_index = 0;
+        }
+
+        *sample = (self.phase as f32 * self.tones[self.tone_index as usize] * 2.0 * 3.141592 / self.sample_rate as f32).sin();
+        self.phase += 1;
+        *sample
     }
 }
 
